@@ -1,0 +1,540 @@
+# ScanPro QR - Cursor IDE Rules
+## Flutter/Dart 项目开发规范
+
+---
+
+## 📋 项目概述
+
+**项目名称**：ScanPro QR  
+**技术栈**：Flutter 3.x + Dart 3.x  
+**状态管理**：Provider  
+**目标平台**：Android + iOS  
+**开发阶段**：MVP (4-6周)
+
+---
+
+## 🎯 核心原则
+
+1. **简洁优先**：代码要清晰、易读、易维护
+2. **性能优先**：关注关键路径性能（扫描速度 < 0.5秒）
+3. **用户优先**：所有功能以用户体验为中心
+4. **测试驱动**：关键功能必须有测试覆盖
+
+---
+
+## 📁 项目结构规范
+
+### 目录结构
+```
+lib/
+├── main.dart                    # 应用入口
+├── app.dart                     # 应用配置
+├── models/                      # 数据模型
+├── providers/                   # 状态管理
+├── screens/                     # 页面
+├── widgets/                     # 可复用组件
+├── services/                    # 业务服务
+├── utils/                       # 工具类
+└── config/                      # 配置
+```
+
+### 文件命名
+- **文件**：snake_case（`scan_screen.dart`）
+- **类**：PascalCase（`ScanScreen`）
+- **变量/函数**：camelCase（`scanResult`）
+- **常量**：UPPER_SNAKE_CASE（`MAX_HISTORY_COUNT`）
+
+---
+
+## 💻 Flutter/Dart 代码规范
+
+### 遵循 Effective Dart 指南
+- 使用 `dart format` 格式化代码
+- 遵循 Dart 官方风格指南
+- 使用 `dart analyze` 检查代码质量
+
+### 代码风格
+```dart
+// ✅ 好的做法
+class ScanService {
+  Future<void> startScan() async {
+    // 实现
+  }
+}
+
+// ❌ 避免
+class scanService {  // 类名应该是 PascalCase
+  Future<void> StartScan() async {  // 方法名应该是 camelCase
+    // 实现
+  }
+}
+```
+
+### 命名规范
+- **类名**：PascalCase，描述性强（`QRGeneratorService`）
+- **文件名**：snake_case，与类名对应（`qr_generator_service.dart`）
+- **变量名**：camelCase，清晰表达意图（`scanResult`）
+- **常量**：UPPER_SNAKE_CASE（`MAX_HISTORY_ITEMS`）
+- **私有成员**：下划线前缀（`_privateField`）
+
+### 导入顺序
+```dart
+// 1. Dart SDK
+import 'dart:async';
+import 'dart:io';
+
+// 2. Flutter 框架
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// 3. 第三方包
+import 'package:provider/provider.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+
+// 4. 项目内部（相对路径）
+import '../models/scan_result.dart';
+import '../services/scanner_service.dart';
+```
+
+---
+
+## 🏗️ 架构规范
+
+### 分层架构
+1. **UI Layer (screens/widgets)**：只负责展示和用户交互
+2. **Business Layer (providers/services)**：业务逻辑处理
+3. **Data Layer (services/database)**：数据访问和存储
+
+### 状态管理（Provider）
+```dart
+// ✅ 好的做法：Provider 只管理状态，不包含业务逻辑
+class ScanProvider with ChangeNotifier {
+  bool _isScanning = false;
+  ScanResult? _lastResult;
+  
+  bool get isScanning => _isScanning;
+  ScanResult? get lastResult => _lastResult;
+  
+  // 业务逻辑应该在 Service 中
+  Future<void> startScan() async {
+    _isScanning = true;
+    notifyListeners();
+    
+    final service = ScannerService();
+    final result = await service.scan();
+    
+    _lastResult = result;
+    _isScanning = false;
+    notifyListeners();
+  }
+}
+```
+
+### 服务层设计
+```dart
+// ✅ 好的做法：Service 是纯业务逻辑，无状态
+class ScannerService {
+  Future<ScanResult> scan() async {
+    // 扫描逻辑
+  }
+  
+  Future<void> dispose() async {
+    // 清理资源
+  }
+}
+```
+
+---
+
+## 🧩 Widget 设计规范
+
+### Widget 拆分原则
+- **单一职责**：每个 Widget 只做一件事
+- **可复用性**：提取公共组件到 `widgets/`
+- **性能优化**：使用 `const` 构造函数
+
+```dart
+// ✅ 好的做法：小的、可复用的 Widget
+class QRPreview extends StatelessWidget {
+  final String data;
+  final int size;
+  
+  const QRPreview({
+    Key? key,
+    required this.data,
+    this.size = 256,
+  }) : super(key: key);
+  
+  @override
+  Widget build(BuildContext context) {
+    return QrImageView(
+      data: data,
+      size: size,
+    );
+  }
+}
+```
+
+### 页面 Widget
+- 页面放在 `screens/` 目录
+- 使用 `StatelessWidget` 或 `Consumer`（如果只需要读取状态）
+- 复杂页面可以拆分成多个 Widget
+
+---
+
+## 📊 数据模型规范
+
+### Model 设计
+```dart
+// ✅ 好的做法：清晰的 Model，支持序列化
+class ScanResult {
+  final int id;
+  final QRType type;
+  final String content;
+  final DateTime scanTime;
+  
+  ScanResult({
+    required this.id,
+    required this.type,
+    required this.content,
+    required this.scanTime,
+  });
+  
+  // 支持 JSON 序列化（如果需要）
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'type': type.toString(),
+      'content': content,
+      'scan_time': scanTime.millisecondsSinceEpoch,
+    };
+  }
+  
+  factory ScanResult.fromMap(Map<String, dynamic> map) {
+    return ScanResult(
+      id: map['id'] as int,
+      type: QRType.fromString(map['type'] as String),
+      content: map['content'] as String,
+      scanTime: DateTime.fromMillisecondsSinceEpoch(map['scan_time'] as int),
+    );
+  }
+}
+```
+
+---
+
+## 🔧 错误处理规范
+
+### 统一错误处理
+```dart
+// ✅ 好的做法：明确的错误类型
+class ScanException implements Exception {
+  final String message;
+  final String? code;
+  
+  ScanException(this.message, {this.code});
+  
+  @override
+  String toString() => 'ScanException: $message';
+}
+
+// 使用
+try {
+  await scannerService.scan();
+} on ScanException catch (e) {
+  // 处理扫描错误
+  showError(e.message);
+} catch (e) {
+  // 处理未知错误
+  showError('未知错误：$e');
+}
+```
+
+### 用户友好的错误提示
+- 不要直接显示技术错误信息
+- 提供解决建议
+- 记录详细错误日志（开发阶段）
+
+---
+
+## 🧪 测试规范
+
+### 测试文件位置
+- 单元测试：`test/unit/`
+- 集成测试：`test/integration/`
+- Widget 测试：`test/widget/`
+
+### 测试命名
+```dart
+// ✅ 好的做法：描述性测试名称
+test('ScannerService should return result when scan succeeds', () {
+  // 测试代码
+});
+
+test('ScannerService should throw exception when camera fails', () {
+  // 测试代码
+});
+```
+
+### 测试覆盖率要求
+- **核心服务**：> 80%
+- **关键业务逻辑**：> 70%
+- **UI 组件**：> 50%（MVP 阶段可降低）
+
+---
+
+## 📝 注释和文档规范
+
+### 文档注释
+```dart
+/// 扫描服务类
+/// 
+/// 负责处理 QR 码和条码的扫描功能
+/// 使用 ML Kit (Android) 和 Vision Framework (iOS)
+class ScannerService {
+  /// 开始扫描
+  /// 
+  /// 返回扫描结果的 Stream
+  /// 
+  /// Throws [ScanException] 如果扫描失败
+  Stream<BarcodeCapture> startScanning() {
+    // 实现
+  }
+}
+```
+
+### 代码注释
+- **复杂逻辑**：必须注释
+- **业务规则**：必须注释
+- **TODO/FIXME**：标记待办事项
+
+```dart
+// TODO: Phase 2 - 添加低光增强功能
+// FIXME: 某些设备上扫描速度较慢，需要优化
+```
+
+---
+
+## 🚀 性能优化规范
+
+### 关键性能指标
+- **应用启动**：< 2秒
+- **扫描速度**：< 0.5秒
+- **页面切换**：流畅，60 FPS
+- **内存占用**：< 150MB
+
+### 优化实践
+```dart
+// ✅ 使用 const 构造函数
+const QRPreview(data: 'test');
+
+// ✅ 避免不必要的 rebuild
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<MyProvider>(
+      builder: (context, provider, child) {
+        // 只重建需要的部分
+        return Column(
+          children: [
+            child!,  // 使用 child 避免重建
+            Text(provider.data),
+          ],
+        );
+      },
+      child: const ExpensiveWidget(),  // 不会重建
+    );
+  }
+}
+
+// ✅ 及时释放资源
+@override
+void dispose() {
+  _controller.dispose();
+  _subscription.cancel();
+  super.dispose();
+}
+```
+
+---
+
+## 🔒 安全规范
+
+### 数据安全
+- 敏感数据不存储在日志中
+- 用户数据存储在应用私有目录
+- Phase 2 添加数据加密
+
+### 权限处理
+```dart
+// ✅ 好的做法：清晰的权限请求和错误处理
+Future<bool> requestCameraPermission() async {
+  final status = await Permission.camera.request();
+  
+  if (status.isDenied) {
+    // 显示说明对话框
+    showPermissionDialog();
+    return false;
+  }
+  
+  if (status.isPermanentlyDenied) {
+    // 引导用户到设置
+    openAppSettings();
+    return false;
+  }
+  
+  return status.isGranted;
+}
+```
+
+---
+
+## 📦 依赖管理规范
+
+### pubspec.yaml
+- **版本锁定**：使用具体版本号（`^3.5.0`）
+- **定期更新**：每周检查依赖更新
+- **最小依赖**：只添加必要的包
+
+### 依赖分类
+```yaml
+dependencies:
+  # 核心依赖
+  flutter:
+    sdk: flutter
+  
+  # 功能依赖
+  mobile_scanner: ^3.5.0
+  qr_flutter: ^4.1.0
+  
+dev_dependencies:
+  # 开发工具
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.0
+```
+
+---
+
+## 🐛 Bug 和 Issue 处理
+
+### Bug 报告格式
+```markdown
+**问题描述**：
+简要描述问题
+
+**复现步骤**：
+1. 步骤 1
+2. 步骤 2
+
+**预期行为**：
+应该发生什么
+
+**实际行为**：
+实际发生了什么
+
+**环境信息**：
+- 设备：iPhone 14 Pro
+- 系统：iOS 17.0
+- 应用版本：1.0.0
+```
+
+### 代码审查要点
+- ✅ 代码风格一致
+- ✅ 无明显的性能问题
+- ✅ 错误处理完善
+- ✅ 有必要的测试
+- ✅ 无安全漏洞
+
+---
+
+## 📚 Git 提交规范
+
+### 提交信息格式
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+### Type 类型
+- `feat`: 新功能
+- `fix`: 修复 Bug
+- `docs`: 文档更新
+- `style`: 代码格式（不影响功能）
+- `refactor`: 重构
+- `test`: 测试
+- `chore`: 构建/工具变更
+
+### 示例
+```
+feat(scan): 添加批量扫描功能
+
+- 支持连续扫描多个 QR 码
+- 添加进度显示
+- 添加暂停/继续功能
+
+Closes #123
+```
+
+---
+
+## 🎯 MVP 阶段特殊规则
+
+### 功能优先级
+1. **P0（必须）**：核心扫描、基础生成、历史记录
+2. **P1（重要）**：UI/UX 优化、错误处理
+3. **P2（可选）**：高级功能（Phase 2）
+
+### 代码质量 vs 速度
+- **MVP 阶段**：优先速度，但代码要可维护
+- **Phase 2+**：提高代码质量和测试覆盖率
+
+### 技术债务管理
+- 记录所有技术债务（TODO 注释）
+- Phase 2 统一处理
+- 不影响核心功能的技术债务可以延后
+
+---
+
+## 🔄 持续改进
+
+### 代码审查
+- 所有代码必须经过审查
+- 关注代码质量和一致性
+- 分享最佳实践
+
+### 定期重构
+- 每周回顾代码
+- 识别重构机会
+- 逐步改进架构
+
+---
+
+## 📖 参考资源
+
+- [Effective Dart](https://dart.dev/guides/language/effective-dart)
+- [Flutter 官方文档](https://flutter.dev/docs)
+- [Provider 文档](https://pub.dev/packages/provider)
+- [项目技术架构方案](./技术架构方案.md)
+
+---
+
+## ✅ 检查清单
+
+在提交代码前，确保：
+- [ ] 代码格式化（`dart format .`）
+- [ ] 代码分析通过（`dart analyze`）
+- [ ] 测试通过（`flutter test`）
+- [ ] 无明显的性能问题
+- [ ] 错误处理完善
+- [ ] 注释清晰
+- [ ] 遵循命名规范
+- [ ] 遵循项目结构
+
+---
+
+**最后更新**：2026年1月29日  
+**维护者**：开发团队

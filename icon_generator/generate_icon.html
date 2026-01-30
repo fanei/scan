@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SmartScan Icon Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            display: block;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #388E3C;
+        }
+        .info {
+            background: #E8F5E9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 SmartScan 图标生成器</h1>
+        <p>这个工具会生成 1024x1024 的高清图标，可用于 Android 和 iOS。</p>
+        
+        <canvas id="iconCanvas" width="1024" height="1024"></canvas>
+        
+        <div>
+            <button onclick="generateIcon()">🔄 重新生成</button>
+            <button onclick="downloadIcon()">⬇️ 下载图标</button>
+        </div>
+        
+        <div class="info">
+            <h3>使用说明：</h3>
+            <ol>
+                <li>点击"下载图标"保存为 PNG</li>
+                <li>使用 <code>flutter_launcher_icons</code> 自动生成所有尺寸</li>
+                <li>或手动替换 Android/iOS 对应文件夹的图标</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('iconCanvas');
+        const ctx = canvas.getContext('2d');
+        const size = 1024;
+
+        function generateIcon() {
+            // 清空画布
+            ctx.clearRect(0, 0, size, size);
+            
+            // 1. 绘制渐变背景
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#4CAF50');  // Material Green 500
+            gradient.addColorStop(1, '#2E7D32');  // Material Green 800
+            
+            ctx.fillStyle = gradient;
+            
+            // 圆角矩形背景
+            const radius = size * 0.22;
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+            
+            // 2. 绘制扫描框四角
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = size * 0.04;
+            ctx.lineCap = 'round';
+            
+            const cornerSize = size * 0.18;
+            const margin = size * 0.22;
+            
+            // 左上角
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin + cornerSize, margin);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin, margin + cornerSize);
+            ctx.stroke();
+            
+            // 右上角
+            ctx.beginPath();
+            ctx.moveTo(size - margin, margin);
+            ctx.lineTo(size - margin - cornerSize, margin);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(size - margin, margin);
+            ctx.lineTo(size - margin, margin + cornerSize);
+            ctx.stroke();
+            
+            // 左下角
+            ctx.beginPath();
+            ctx.moveTo(margin, size - margin);
+            ctx.lineTo(margin + cornerSize, size - margin);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(margin, size - margin);
+            ctx.lineTo(margin, size - margin - cornerSize);
+            ctx.stroke();
+            
+            // 右下角
+            ctx.beginPath();
+            ctx.moveTo(size - margin, size - margin);
+            ctx.lineTo(size - margin - cornerSize, size - margin);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(size - margin, size - margin);
+            ctx.lineTo(size - margin, size - margin - cornerSize);
+            ctx.stroke();
+            
+            // 3. 绘制 QR 点阵
+            ctx.fillStyle = '#FFFFFF';
+            
+            const dotRadius = size * 0.028;
+            const spacing = size * 0.08;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            
+            // 3x3 点阵（跳过某些点形成有趣的图案）
+            const dots = [
+                [-1, 0], [0, -1], [1, 0], [0, 1],  // 十字形
+                [-1, 1], [1, -1]  // 两个对角
+            ];
+            
+            dots.forEach(([row, col]) => {
+                const x = centerX + (col * spacing);
+                const y = centerY + (row * spacing);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, dotRadius, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 中心大圆点
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, dotRadius * 1.5, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'smartscan_icon_1024.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // 页面加载时生成图标
+        window.onload = generateIcon;
+    </script>
+</body>
+</html>

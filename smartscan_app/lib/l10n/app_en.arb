@@ -1,0 +1,167 @@
+{
+  "@@locale": "en",
+  
+  "appName": "SmartScan",
+  "@appName": {
+    "description": "Application name"
+  },
+
+  "scan": "Scan",
+  "generate": "Generate",
+  "history": "History",
+
+  "scanScreen": "Scan",
+  "generateScreen": "Generate",
+  "historyScreen": "History",
+
+  "scanPrompt": "Place QR code/barcode within the frame",
+  "torch": "Flashlight",
+  "switchCamera": "Switch Camera",
+
+  "qrType": "QR Code Type",
+  "inputContent": "Enter content",
+  "generateQRCode": "Generate QR Code",
+  "save": "Save",
+  "share": "Share",
+  "copy": "Copy",
+
+  "url": "URL",
+  "text": "Text",
+  "wifi": "WiFi",
+  "phone": "Phone",
+  "sms": "SMS",
+  "contact": "Contact",
+  "unknown": "Unknown",
+
+  "search": "Search",
+  "delete": "Delete",
+  "clearAll": "Clear All",
+  "noHistory": "No history records",
+  "deleteConfirm": "Are you sure you want to delete?",
+  "clearAllConfirm": "Are you sure you want to clear all history?",
+  "deleted": "Deleted",
+  "cleared": "Cleared",
+
+  "openInBrowser": "Open in Browser",
+  "makeCall": "Make Call",
+  "sendSMS": "Send SMS",
+  "connectWiFi": "Connect WiFi",
+  "saveContact": "Save Contact",
+  "copyToClipboard": "Copy to Clipboard",
+  "copiedToClipboard": "Copied to clipboard",
+
+  "content": "Content",
+  "close": "Close",
+  "cancel": "Cancel",
+  "confirm": "OK",
+  "retry": "Retry",
+
+  "errorCameraPermissionDenied": "Camera permission denied",
+  "errorCameraUnavailable": "Camera unavailable",
+  "errorScanFailed": "Scan failed, please try again",
+  "errorGenerateFailed": "Generate failed, please try again",
+  "errorPleaseEnterContent": "Please enter content",
+  "errorSaveFailed": "Save failed",
+  "errorShareFailed": "Share failed",
+
+  "savedToGallery": "Saved to gallery",
+  "saveToGalleryFailed": "Save to gallery failed",
+  "pleaseGenerateFirst": "Please generate QR code first",
+
+  "wifiInfo": "WiFi Information",
+  
+  "hintUrl": "e.g. https://example.com",
+  "hintText": "Enter any text",
+  "hintWifi": "e.g. WIFI:T:WPA;S:NetworkName;P:Password;;",
+  "hintPhone": "e.g. +1 234 567 8900",
+  "hintSms": "e.g. smsto:1234567890:Message content",
+  "hintContact": "Enter vCard format contact",
+
+  "just_now": "Just now",
+  "minutes_ago": "{count} minutes ago",
+  "@minutes_ago": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hours_ago": "{count} hours ago",
+  "@hours_ago": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "days_ago": "{count} days ago",
+  "@days_ago": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "batchScan": "Batch Scan",
+  "batchScanResults": "Scan Results",
+  "scanned": "Scanned",
+  "unique": "Unique",
+  "totalScans": "Total",
+  "uniqueScans": "Unique",
+  "deduplicate": "Remove Duplicates",
+  "finish": "Finish",
+  "clearList": "Clear List",
+  "clearListConfirm": "Clear all scan results?",
+  "noScanResults": "No scan results",
+  "recentScans": "Recent Scans",
+  "duplicateScanned": "Already scanned",
+  "exportCSV": "Export CSV",
+  "exportTXT": "Export TXT",
+  "exportSuccess": "Export Successful",
+  "exportFailed": "Export Failed",
+  "savedTo": "Saved to",
+  "shareFailed": "Share Failed",
+  "exitBatchScan": "Exit Batch Scan",
+  "exitBatchScanConfirm": "Exit batch scan mode? Unsaved results will be lost.",
+  "duration": "Duration",
+  "seconds": " seconds",
+
+  "settings": "Settings",
+  "general": "General",
+  "languageSettings": "Language",
+  "followSystem": "Follow System",
+  "followSystemDesc": "Use system language settings",
+  "chinese": "简体中文",
+  "english": "English",
+  "languageChangeHint": "Language changes will take effect immediately",
+  "about": "About",
+  "aboutApp": "About App",
+  "appDescription": "Fast, secure, and easy-to-use QR code scanner and generator",
+  "privacyAndSecurity": "Privacy & Security",
+  "privacyPolicy": "Privacy Policy",
+  "dataManagement": "Data Management",
+  "clearHistoryDesc": "Delete all scan history",
+  "clearHistoryConfirm": "Are you sure you want to clear all scan history? This action cannot be undone.",
+  "historyCleared": "History cleared",
+  "other": "Other",
+  "version": "Version",
+  "reportIssue": "Report Issue",
+  "reportIssueDesc": "Have a problem or suggestion? Contact us",
+  "rateUs": "Rate Us",
+  "rateUsDesc": "Like our app? Rate us",
+  "shareApp": "Share App",
+  "shareAppDesc": "Recommend to friends",
+  "shareAppMessage": "Check out this great QR code scanner: SmartScan",
+  "features": "Features",
+  "featureScan": "Fast QR code and barcode scanning",
+  "featureBatchScan": "Batch continuous scanning",
+  "featureGenerate": "Generate various types of QR codes",
+  "featureHistory": "Scan history",
+  "featureMultiLanguage": "Multi-language support",
+  "developer": "Developer",
+  "developedBy": "Developed by",
+  "contactEmail": "Contact Email",
+  "openSource": "Open Source",
+  "licenses": "Licenses"
+}
