@@ -11,6 +11,7 @@ import 'screens/scan/scan_screen.dart';
 import 'screens/generate/generate_screen.dart';
 import 'screens/history/history_screen.dart';
 import 'screens/settings/settings_screen.dart';
+import 'config/app_theme.dart';
 
 /// 应用主类
 class SmartScanApp extends StatelessWidget {
@@ -30,10 +31,9 @@ class SmartScanApp extends StatelessWidget {
         builder: (context, localeProvider, _) {
           return MaterialApp(
             title: 'SmartScan',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-              useMaterial3: true,
-            ),
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: ThemeMode.system,
             locale: localeProvider.locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
