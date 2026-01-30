@@ -69,7 +69,7 @@ class AppTheme {
     ),
     
     // 卡片主题
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: elevationSmall,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadiusMedium),
@@ -169,7 +169,7 @@ class AppTheme {
     ),
     
     // 对话框主题
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       elevation: elevationLarge,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadiusLarge),
@@ -289,7 +289,7 @@ class AppTheme {
     ),
     
     // 卡片主题
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: elevationSmall,
       color: const Color(0xFF2C2C2C),
       shape: RoundedRectangleBorder(
@@ -364,7 +364,7 @@ class AppTheme {
     ),
     
     // 对话框主题
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       elevation: elevationLarge,
       backgroundColor: const Color(0xFF2C2C2C),
       shape: RoundedRectangleBorder(
