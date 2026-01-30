@@ -53,16 +53,37 @@ class QRGeneratorService {
 
     switch (type) {
       case QRType.url:
-        return Validators.isValidUrl(data);
+        // 检查是否已有协议或是否为有效域名
+        if (data.startsWith('http://') || data.startsWith('https://')) {
+          return Validators.isValidHttpUrl(data);
+        }
+        // 允许无协议的 URL，formatData 会自动添加
+        return data.contains('.') && data.length >= 3;
+        
       case QRType.phone:
-        return Validators.isValidPhone(data.replaceFirst('tel:', ''));
+        // 移除可能的 tel: 前缀再验证
+        final phone = data.replaceFirst('tel:', '');
+        return Validators.isValidPhone(phone);
+        
       case QRType.sms:
-        final phone = data.replaceFirst(RegExp(r'smsto?:'), '');
-        return Validators.isValidPhone(phone.split(':').first);
+        // 提取电话号码部分验证
+        String phone = data;
+        if (phone.startsWith('smsto:')) {
+          phone = phone.substring(6); // 移除 "smsto:"
+        } else if (phone.startsWith('sms:')) {
+          phone = phone.substring(4); // 移除 "sms:"
+        }
+        final phoneNumber = phone.split(':').first;
+        return Validators.isValidPhone(phoneNumber);
+        
       case QRType.wifi:
-        return data.contains('S:') && data.contains('P:'); // 简单验证
+        // 基本的 WiFi QR 格式检查
+        return data.contains('S:') && data.contains('P:');
+        
       case QRType.contact:
-        return data.contains('BEGIN:VCARD') && data.contains('END:VCARD');
+        // 使用 Validators 的 vCard 验证
+        return Validators.isValidVCard(data);
+        
       case QRType.text:
       case QRType.unknown:
         return true;
