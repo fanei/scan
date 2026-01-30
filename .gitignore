@@ -1,0 +1,52 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android related
+*.iml
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.gradle/
+local.properties
+
+# iOS related
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+# 密钥文件 (重要: 不要提交)
+smartscan_app/android/key.properties
+smartscan_app/android/app/*.keystore
+smartscan_app/android/app/*.jks
+keystore_info.txt
+
+# 临时文件
+*.tmp
+*.bak
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iws
+
+# 文档临时文件
+~$*.md
+
+# 构建产物
+smartscan_app/build/
+smartscan_app/.dart_tool/
+
+# 报告文件(可选,根据需要调整)
+# *.md

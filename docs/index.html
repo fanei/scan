@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SmartScan - 快速、安全、易用的二维码扫描与生成工具">
+    <title>SmartScan - QR Code Scanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #f5f5f5;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        nav a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #45a049;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .content h2 {
+            color: #4CAF50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .content h3 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .content ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .content li {
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            background: #f5f5f5;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .lang-switch {
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        
+        .lang-switch button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .lang-switch button:hover {
+            background: #45a049;
+        }
+        
+        .lang-switch button.active {
+            background: #2e7d32;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SmartScan</h1>
+            <p>快速、安全、易用的二维码扫描与生成工具</p>
+        </header>
+        
+        <div class="lang-switch">
+            <button onclick="switchLang('zh')" id="btn-zh" class="active">简体中文</button>
+            <button onclick="switchLang('en')" id="btn-en">English</button>
+        </div>
+        
+        <nav>
+            <a href="#home" id="nav-home-zh">首页</a>
+            <a href="privacy.html" id="nav-privacy-zh">隐私政策</a>
+            <a href="#contact" id="nav-contact-zh">联系我们</a>
+            
+            <a href="#home" id="nav-home-en" class="hidden">Home</a>
+            <a href="privacy.html" id="nav-privacy-en" class="hidden">Privacy Policy</a>
+            <a href="#contact" id="nav-contact-en" class="hidden">Contact</a>
+        </nav>
+        
+        <div class="content" id="content-zh">
+            <h2>欢迎使用 SmartScan</h2>
+            <p>SmartScan 是一款专业的二维码和条形码扫描应用,专为追求效率和隐私的用户设计。</p>
+            
+            <h3>核心功能</h3>
+            <ul>
+                <li><strong>快速扫描</strong> - 支持 QR 码、条形码等多种格式</li>
+                <li><strong>批量扫描</strong> - 连续扫描多个二维码,智能去重</li>
+                <li><strong>二维码生成</strong> - 生成多种类型的二维码</li>
+                <li><strong>扫描历史</strong> - 自动保存记录,随时查看</li>
+                <li><strong>多语言支持</strong> - 支持中文和英文</li>
+            </ul>
+            
+            <h3>隐私保护</h3>
+            <p>SmartScan 高度重视您的隐私:</p>
+            <ul>
+                <li>所有数据完全本地存储</li>
+                <li>不上传任何信息到服务器</li>
+                <li>不收集个人信息</li>
+                <li>完全离线工作</li>
+            </ul>
+            
+            <h3 id="contact">联系我们</h3>
+            <p>如有问题或建议,欢迎联系:</p>
+            <p><strong>邮箱:</strong> faneizn@gmail.com</p>
+            <p><strong>开发者:</strong> fanei</p>
+        </div>
+        
+        <div class="content hidden" id="content-en">
+            <h2>Welcome to SmartScan</h2>
+            <p>SmartScan is a professional QR code and barcode scanning application designed for users who value efficiency and privacy.</p>
+            
+            <h3>Core Features</h3>
+            <ul>
+                <li><strong>Fast Scanning</strong> - Supports QR codes, barcodes, and more</li>
+                <li><strong>Batch Scanning</strong> - Continuously scan multiple QR codes with smart deduplication</li>
+                <li><strong>QR Code Generation</strong> - Generate various types of QR codes</li>
+                <li><strong>Scan History</strong> - Auto-save records for easy access</li>
+                <li><strong>Multi-language Support</strong> - Supports Chinese and English</li>
+            </ul>
+            
+            <h3>Privacy Protection</h3>
+            <p>SmartScan takes your privacy seriously:</p>
+            <ul>
+                <li>All data stored locally</li>
+                <li>No information uploaded to servers</li>
+                <li>No personal information collected</li>
+                <li>Works completely offline</li>
+            </ul>
+            
+            <h3 id="contact">Contact Us</h3>
+            <p>For questions or suggestions, please contact:</p>
+            <p><strong>Email:</strong> faneizn@gmail.com</p>
+            <p><strong>Developer:</strong> fanei</p>
+        </div>
+        
+        <footer>
+            <p>&copy; 2026 fanei. All rights reserved.</p>
+            <p>SmartScan - Fast, Secure, Easy-to-use QR Code Scanner</p>
+        </footer>
+    </div>
+    
+    <script>
+        function switchLang(lang) {
+            const zhContent = document.getElementById('content-zh');
+            const enContent = document.getElementById('content-en');
+            const btnZh = document.getElementById('btn-zh');
+            const btnEn = document.getElementById('btn-en');
+            
+            const navHomeZh = document.getElementById('nav-home-zh');
+            const navPrivacyZh = document.getElementById('nav-privacy-zh');
+            const navContactZh = document.getElementById('nav-contact-zh');
+            const navHomeEn = document.getElementById('nav-home-en');
+            const navPrivacyEn = document.getElementById('nav-privacy-en');
+            const navContactEn = document.getElementById('nav-contact-en');
+            
+            if (lang === 'zh') {
+                zhContent.classList.remove('hidden');
+                enContent.classList.add('hidden');
+                btnZh.classList.add('active');
+                btnEn.classList.remove('active');
+                
+                navHomeZh.classList.remove('hidden');
+                navPrivacyZh.classList.remove('hidden');
+                navContactZh.classList.remove('hidden');
+                navHomeEn.classList.add('hidden');
+                navPrivacyEn.classList.add('hidden');
+                navContactEn.classList.add('hidden');
+            } else {
+                zhContent.classList.add('hidden');
+                enContent.classList.remove('hidden');
+                btnZh.classList.remove('active');
+                btnEn.classList.add('active');
+                
+                navHomeZh.classList.add('hidden');
+                navPrivacyZh.classList.add('hidden');
+                navContactZh.classList.add('hidden');
+                navHomeEn.classList.remove('hidden');
+                navPrivacyEn.classList.remove('hidden');
+                navContactEn.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
